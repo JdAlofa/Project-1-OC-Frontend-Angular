@@ -1,3 +1,60 @@
-<h2>Olympic games app</h2>
-<hr />
-<p>{{ (olympics$ | async)?.length }} data loaded</p>
+<div class="container">
+  <h2>Medals per Country</h2>
+
+  <ng-container *ngIf="olympics$ | async as olympicsData; else loadingOrError">
+    <div *ngIf="olympicsData && olympicsData.length > 0" class="chart-area">
+      <!-- Info Boxes -->
+      <div class="info-boxes">
+        <div class="info-box">
+          <span>Number of JOs</span>
+          <strong>{{ numberOfJos }}</strong>
+        </div>
+        <div class="info-box">
+          <span>Number of countries</span>
+          <strong>{{ numberOfCountries }}</strong>
+        </div>
+      </div>
+
+      <!-- Pie Chart -->
+      <div class="chart-wrapper">
+        <ngx-charts-pie-chart
+          [view]="view"
+          [scheme]="colorScheme"
+          [results]="chartData"
+          [gradient]="gradient"
+          [legend]="showLegend"
+          [labels]="showLabels"
+          [doughnut]="isDoughnut"
+          [tooltipText]="tooltipText"
+          (select)="onSelect($event)"
+        >
+        </ngx-charts-pie-chart>
+      </div>
+
+      <!-- Custom Legend (Mimicking the lines in the image) -->
+      <div class="custom-legend">
+        <ul>
+          <li *ngFor="let item of chartData; let i = index">
+            <span
+              class="legend-line"
+              [style.border-top-color]="
+                colorScheme.domain[i % colorScheme.domain.length]
+              "
+            ></span>
+            {{ item.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Template for Loading State -->
+  <ng-template #loadingOrError>
+    <div *ngIf="(olympics$ | async) === undefined">
+      <p>Loading Olympic data...</p>
+    </div>
+    <div *ngIf="(olympics$ | async) === null">
+      <p>Error loading Olympic data.</p>
+    </div>
+  </ng-template>
+</div>
