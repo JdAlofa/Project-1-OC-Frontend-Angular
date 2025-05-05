@@ -1,0 +1,167 @@
+.container {
+  margin: 20px;
+  padding: 0 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #04838f; // Use consistent theme color
+  color: white;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.info-boxes {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 700px; // Align with chart width initially
+}
+
+.info-box {
+  border: 1px solid #04838f;
+  border-radius: 5px;
+  padding: 15px 20px;
+  text-align: center;
+  min-width: 160px; // Base size
+  flex: 1 1 160px; // Allow shrink/grow
+  max-width: 200px; // Limit max size
+
+  span {
+    display: block;
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 8px;
+  }
+
+  strong {
+    display: block;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #04838f;
+  }
+}
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 700px; // Max width for large screens
+  margin: 0 auto 20px auto; // Center wrapper
+  aspect-ratio: 7 / 3; // Maintain a ratio (adjust if needed, e.g., 16 / 9)
+}
+
+ngx-charts-line-chart {
+  display: block;
+  width: 100%; // Fill wrapper width
+  height: 100%; // Fill wrapper height (determined by aspect-ratio)
+
+  ::ng-deep .ngx-charts {
+    display: block; // Ensure block behavior
+    width: 100%;
+    height: 100%;
+
+    svg {
+      display: block; // Remove extra space
+      width: 100%; // Scale width
+      height: 100%; // Scale height to fill container
+      max-width: 100%; // Ensure it doesn't overflow container
+    }
+
+    .axis-label {
+      // Example: Style axis labels
+      fill: #555;
+    }
+    text {
+      // General text styling within chart
+      fill: #333;
+    }
+  }
+}
+
+.back-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}
+
+p.status-message {
+  text-align: center;
+  font-size: 1.1em;
+  color: #666;
+  margin-top: 50px;
+  width: 100%;
+}
+
+// --- Media Queries for Responsiveness ---
+@media (max-width: 768px) {
+  .info-boxes {
+    gap: 15px;
+    max-width: 95%; // Allow boxes to take more width
+  }
+  .info-box {
+    min-width: 140px; // Slightly smaller base width
+    padding: 12px 15px;
+    strong {
+      font-size: 1.6em;
+    }
+  }
+  .chart-wrapper {
+    max-width: 95%; // Allow chart wrapper to shrink
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin: 10px;
+    padding: 0 10px;
+  }
+  h2 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+  }
+  .info-boxes {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .info-box {
+    // Make boxes significantly smaller
+    min-width: 110px; // Smaller minimum width
+    flex-basis: 110px; // Suggest smaller base size
+    padding: 10px; // Reduce padding
+    max-width: 140px; // Reduce max width
+
+    span {
+      font-size: 0.85em; // Smaller label text
+    }
+    strong {
+      font-size: 1.3em; // Smaller number text
+    }
+  }
+  .chart-wrapper {
+    max-width: 100%; // Allow chart to take full width
+    // aspect-ratio: 4 / 3; // Optionally adjust aspect ratio for mobile if needed
+  }
+  .back-button {
+    width: 80%;
+    max-width: 250px;
+  }
+}

@@ -18,7 +18,6 @@
       <!-- Pie Chart -->
       <div class="chart-wrapper">
         <ngx-charts-pie-chart
-          [view]="view"
           [scheme]="colorScheme"
           [results]="chartData"
           [gradient]="gradient"
@@ -30,21 +29,7 @@
         >
         </ngx-charts-pie-chart>
       </div>
-
-      <!-- Custom Legend (Mimicking the lines in the image) -->
-      <div class="custom-legend">
-        <ul>
-          <li *ngFor="let item of chartData; let i = index">
-            <span
-              class="legend-line"
-              [style.border-top-color]="
-                colorScheme.domain[i % colorScheme.domain.length]
-              "
-            ></span>
-            {{ item.name }}
-          </li>
-        </ul>
-      </div>
+      
     </div>
   </ng-container>
 

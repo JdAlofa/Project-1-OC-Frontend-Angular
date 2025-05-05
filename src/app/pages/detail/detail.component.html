@@ -1,0 +1,52 @@
+<div class="container">
+  <!-- Use async pipe to wait for country data -->
+  <ng-container *ngIf="countryData$ | async as country; else loadingOrError">
+    <h2>{{ countryName }}</h2>
+
+    <!-- Info Boxes -->
+    <div class="info-boxes">
+      <div class="info-box">
+        <span>Number of entries</span>
+        <strong>{{ totalEntries }}</strong>
+      </div>
+      <div class="info-box">
+        <span>Total number medals</span>
+        <strong>{{ totalMedals }}</strong>
+      </div>
+      <div class="info-box">
+        <span>Total number of athletes</span>
+        <strong>{{ totalAthletes }}</strong>
+      </div>
+    </div>
+
+    <!-- Line Chart -->
+    <div class="chart-wrapper" *ngIf="lineChartData$ | async as chartData">
+      <ngx-charts-line-chart
+        [scheme]="colorScheme"
+        [results]="chartData"
+        [legend]="legend"
+        [xAxis]="xAxis"
+        [yAxis]="yAxis"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [animations]="animations"
+        [timeline]="timeline"
+      >
+      </ngx-charts-line-chart>
+    </div>
+
+    <!-- Back Button -->
+    <button class="back-button" (click)="goBack()">Back to Home</button>
+  </ng-container>
+
+  <!-- Loading/Error Template -->
+  <ng-template #loadingOrError>
+    <!-- Check the specific country data observable -->
+    <div *ngIf="(countryData$ | async) === undefined">
+      <p class="status-message">Loading country data...</p>
+    </div>
+    <!-- Note: Error/Not Found is handled by redirect in ngOnInit -->
+  </ng-template>
+</div>

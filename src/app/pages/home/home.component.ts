@@ -3,7 +3,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
-// No need to import Participation if only used within Olympic
+import { Router } from '@angular/router';
 
 // Interface for the chart data structure expected by ngx-charts
 interface ChartData {
@@ -26,7 +26,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   private dataSubscription: Subscription | undefined;
 
   // --- ngx-charts configuration ---
-  view: [number, number] = [700, 400]; // Width, Height
   gradient: boolean = false;
   showLegend: boolean = false; // Using custom legend/labels
   showLabels: boolean = true; // Show data labels on slices
@@ -40,14 +39,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       </div>
     `;
   };
-  // Define a color scheme (adjust colors to better match the image)
   colorScheme: any = {
     domain: ['#956065', '#B8CBE7', '#89A1DB', '#793D52', '#9780A1'] // Example colors matching image better
   };
-  // --- End ngx-charts configuration ---
 
-
-  constructor(private olympicService: OlympicService) {}
+  constructor(private olympicService: OlympicService, private router : Router) {}
 
   ngOnInit(): void {
     this.olympics$ = this.olympicService.getOlympics();
@@ -103,12 +99,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   /**
    * Handles the click event on a chart slice.
    */
-  onSelect(event: any): void {
+  onSelect(event: ChartData): void { // Use ChartData type for better type safety
     console.log('Chart item selected:', event);
-    // Example: Navigate to a detail page using the stored ID
-    // const countryId = event.extra?.id;
-    // if (countryId) {
-    //   this.router.navigate(['/detail', countryId]); // Requires importing Router
-    // }
+    // Navigate to detail page using the stored ID from 'extra'
+    const countryId = event.extra?.id;
+    if (countryId !== undefined) { // Check if id exists
+      this.router.navigate(['/detail', countryId]);
+    } else {
+      console.error('Country ID not found in chart data:', event);
+    }
   }
 }
