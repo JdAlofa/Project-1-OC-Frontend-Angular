@@ -29,33 +29,36 @@ h2 {
 .info-boxes {
   display: flex;
   justify-content: center;
-  gap: 20px; // Slightly reduce gap
-  margin-bottom: 30px; // Slightly reduce margin
-  flex-wrap: wrap; // Allow boxes to wrap
+  gap: 15px; // Slightly reduce gap
+  margin-bottom: 25px; // Slightly reduce margin
+  flex-wrap: wrap;
   width: 100%; // Take full width to allow wrapping/centering
 }
 
 .info-box {
-  border: 1px solid #04838f; // Teal border
+  border: 2px solid #04838f; // Thicker border
   border-radius: 5px;
-  padding: 15px 20px; // Adjust padding slightly
+  padding: 10px 15px; // Reduced padding
   text-align: center;
-  min-width: 160px; // Adjust min-width
-  flex: 1 1 160px; // Allow boxes to grow/shrink but base on min-width
-  max-width: 200px; // Prevent boxes from becoming too wide
+  min-width: 140px; // Reduced min-width
+  flex: 0 1 auto; // Don't grow, shrink if needed, base on content/min-width
+  max-width: 180px; // Reduced max-width
+  white-space: nowrap; // Prevent wrapping for the whole box content
 
   span {
     display: block;
-    font-size: 1em; // Slightly larger text
+    font-size: 0.9em; // Slightly smaller text
     color: #555;
-    margin-bottom: 8px;
+    margin-bottom: 5px; // Reduced margin
+    white-space: nowrap; // Ensure span doesn't wrap
   }
 
   strong {
     display: block;
-    font-size: 1.8em; // Slightly smaller number for responsiveness
+    font-size: 1.6em; // Slightly smaller number
     font-weight: bold;
     color: #04838f; // Teal color
+    white-space: nowrap; // Ensure strong doesn't wrap
   }
 }
 
@@ -164,14 +167,14 @@ p.status-message {
 // Medium screens (tablets)
 @media (max-width: 768px) {
   .info-boxes {
-    gap: 15px;
+    gap: 10px; // Further reduce gap
   }
 
   .info-box {
-    min-width: 140px; // Slightly smaller base width
-    padding: 12px 15px;
+    min-width: 130px; // Further reduce min-width
+    padding: 8px 12px; // Further reduce padding
     strong {
-      font-size: 1.6em;
+      font-size: 1.5em; // Further reduce number size
     }
   }
 
@@ -201,24 +204,22 @@ p.status-message {
   }
 
   .info-boxes {
-    // Keep flex-wrap: wrap, adjust gap
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 8px; // Smallest gap
+    margin-bottom: 15px;
   }
 
   .info-box {
-    // Make boxes significantly smaller
-    min-width: 120px; // Smaller minimum width
-    flex-basis: 120px; // Suggest a smaller base size
-    padding: 10px 12px; // Reduce padding
-    max-width: 150px; // Reduce max width
+    min-width: auto; // Let padding define minimum width
+    padding: 6px 10px; // Smallest padding
+    flex-basis: auto; // Remove basis suggestion
+    max-width: none; // Remove max width if needed, or keep a small one like 150px
 
     span {
-      font-size: 0.9em; // Smaller label text
-      margin-bottom: 5px;
+      font-size: 0.8em; // Smallest label text
+      margin-bottom: 3px;
     }
     strong {
-      font-size: 1.4em; // Smaller number text
+      font-size: 1.2em; // Smallest number text
     }
   }
 

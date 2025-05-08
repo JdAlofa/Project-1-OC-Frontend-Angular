@@ -1,23 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription, of, combineLatest } from 'rxjs';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { Observable,  of, combineLatest } from 'rxjs';
+import { filter, map,  tap } from 'rxjs/operators';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { Participation } from 'src/app/core/models/Participation';
 import { OlympicService } from 'src/app/core/services/olympic.service';
-
-// Interface for the line chart data structure
-interface LineChartData {
-  name: string; // Country name
-  series: { name: string; value: number }[]; // Year and medals/athletes
-}
+import { LineChartData } from 'src/app/core/models/chartsModels/line-chart-data.model';
 
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss'],
 })
-export class DetailComponent implements OnInit, OnDestroy {
+export class DetailComponent implements OnInit {
   public countryData$: Observable<Olympic | null | undefined> = of(undefined); // Observable for the specific country
   public lineChartData$: Observable<LineChartData[] | null> = of(null); // Observable for chart data
 
@@ -42,8 +37,6 @@ export class DetailComponent implements OnInit, OnDestroy {
     domain: ['#956065', '#B8CBE7', '#89A1DB', '#793D52', '#9780A1'], 
   };
 
-  private subscriptions = new Subscription();
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -51,7 +44,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Get the country ID from the route parameters
+    // Geting the country ID from the route parameters
     const countryId$ = this.route.paramMap.pipe(
       map((params) => params.get('id')),
       filter((id): id is string => id !== null), // Ensure ID is not null
@@ -61,8 +54,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
     // Apply the filter HERE, before combineLatest uses the observable
     const olympicsList$ = this.olympicService.getOlympics().pipe(
-      filter((data): data is Olympic[] => !!data && Array.isArray(data)), // Ensure data is loaded and is an array
-      take(1) // Optional: Take only the first valid emission if data doesn't change dynamically after load
+      filter((data): data is Olympic[] => !!data && Array.isArray(data)) // Ensure data is loaded and is an array
     );
 
     // Combine ID and data to find the specific country
@@ -97,18 +89,11 @@ export class DetailComponent implements OnInit, OnDestroy {
       map((country) => {
         if (!country) return null;
         const chartData = [this.processDataForLineChart(country)];
-        console.log('Line Chart Data:', chartData); // Keep this log for verification
         return chartData;
       })
     );
 
-    // Add subscriptions to the main subscription handler
-    this.subscriptions.add(this.countryData$.subscribe());
-    this.subscriptions.add(this.lineChartData$.subscribe());
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe(); // Unsubscribe from all subscriptions
+  
   }
 
   // Helper function to process data for the line chart
